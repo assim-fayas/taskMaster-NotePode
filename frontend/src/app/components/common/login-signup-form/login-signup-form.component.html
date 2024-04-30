@@ -1,0 +1,77 @@
+<div class="modal fixed w-full h-full top-0 left-0 flex items-center justify-center ">
+    <!-- Backdrop -->
+    <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
+
+    <!-- Modal -->
+    <div class="modal-container bg-white w-1/3 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
+        <div class="modal-content py-4 text-left px-6">
+            <!-- Header -->
+            <div class="flex justify-between items-center pb-3">
+                <p class="text-2xl font-bold">{{formType}}</p>
+                <button (click)="onCloseClicked()" class="modal-close cursor-pointer z-50 ">
+                    <svg class="fill-current text-black " xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 18 18">
+                        <path
+                            d="M15.6 1.6L9 8.2 2.4 1.6 1.6 2.4 8.2 9l-6.6 6.6.8.8L9 9.8l6.6 6.6.8-.8-6.6-6.6 6.6-6.6z" />
+                    </svg>
+                </button>
+            </div>
+            <!-- Form -->
+            <form class="mb-0" [formGroup]="form" (ngSubmit)="OnFormSubmitted()">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+                        Email
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight "
+                        id="email" type="email" [formControlName]="'email'" autocomplete="email"
+                        placeholder="Enter your name" style="outline: none;">
+                    <small *ngIf="form.get('email')?.touched && form.get('email')?.invalid " class="text-red-700">
+                        *Email is required
+                    </small> <br>
+                    <small
+                        *ngIf="form.get('email')?.touched && form.get('email')?.errors?.['emailPatternValidator'] || form.get('email')?.errors?.['noSpaceAllowed']"
+                        class="text-red-700">
+                        *Incorrect email format
+                    </small>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+                        Password
+                    </label>
+                    <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight "
+                        id="password" autocomplete="new-password" type="password" [formControlName]="'password'"
+                        placeholder="********" style="outline: none;"> <br>
+                    <small
+                        *ngIf="form.get('password')?.touched && form.get('password')?.invalid && !form.get('password')?.errors?.['noSpaceAllowed'] "
+                        class="text-red-700">
+                        *Password is required (Min 6 characters and <br> *Atleast one special character required)
+
+                    </small><br>
+                    <small *ngIf="form.get('password')?.touched && form.get('password')?.errors?.['noSpaceAllowed'] "
+                        class="text-red-700">
+                        *No space allowed
+                    </small>
+
+                </div>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <button type="submit"
+                            class="bg-[#F9A727] hover:bg-yellow-400 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            {{buttonText}}
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="pt-3">
+                <p class="text-sm text-black">Didn't have account yet ? &nbsp;
+                    <a (click)="changeformType()"
+                        class=" text-sm font-medium underline cursor-pointer text-blue-800">{{buttonText=='Signup'?
+                        'Login':'Signup' || buttonText=='Login'?
+                        'SignUp':'Login'}}</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

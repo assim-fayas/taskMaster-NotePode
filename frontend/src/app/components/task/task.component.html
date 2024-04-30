@@ -1,0 +1,146 @@
+<app-navbar></app-navbar>
+<div
+    class="bg-base min-h-screen flex flex-col md:flex-col justify-center items-start px-4 pt-20 md:pt-[600px] overflow-hidden">
+    <!-- Search Input -->
+
+    <div class="w-full md:w-1/2 mb-4 lg:w-1/3 md:-mt-[500px]  md:ml-[500px] ">
+        <input (input)="onInputChange($event)"
+            class="w-full px-3 py-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600"
+            type="text" placeholder="Search tasks...">
+    </div>
+
+    <!-- Filter Buttons -->
+    <div class="mt-4 md:mt-0 md:ml-auto md:mr-auto">
+        <div class="flex flex-wrap justify-center md:justify-start">
+            <button (click)=" activateFilterButton('All')" [ngClass]="{'active': activeFilterButton === 'All'}"
+                class="mb-2 no-focus mr-2 bg-white text-gray-700 font-medium py-2 px-4 rounded-md shadow-sm hover:bg-gray-50 ">All</button>
+            <button (click)="activateFilterButton('pending')" [ngClass]="{'active': activeFilterButton === 'pending'}"
+                class="mb-2 no-focus mr-2 bg-white text-gray-700 font-medium py-2 px-4 rounded-md shadow-sm hover:bg-gray-50 ">Pending</button>
+            <button (click)="activateFilterButton('inProgress')"
+                [ngClass]="{'active': activeFilterButton === 'inProgress'}"
+                class="mb-2 no-focus mr-2 bg-white text-gray-700 font-medium py-2 px-4 rounded-md shadow-sm hover:bg-gray-50 ">In
+                Progress</button>
+            <button (click)="activateFilterButton('completed')"
+                [ngClass]="{'active': activeFilterButton === 'completed'}"
+                class="mb-2 no-focus bg-white text-gray-700 font-medium py-2 px-4 rounded-md shadow-sm hover:bg-gray-50 ">Completed</button>
+        </div>
+    </div>
+
+    <!-- Create Task Button -->
+    <div class="flex ml-[70%] md:ml-[75%] md:justify-center  mt-4 md:mt-0">
+        <button (click)="toggleModal()"
+            class="bg-orange-400  hover:bg-[#bc6c25]  font-bold py-1.5 px-2 rounded-md md:py-2 md:px-3 text-sm md:text-base">
+            Create Task
+        </button>
+    </div>
+
+
+    <!-- Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5  md:pt-10  mt-4 w-full z-10 md:ml-12">
+        <!-- Card 1 -->
+        <div *ngFor="let task of tasks" [ngClass]="{'taskPending':task.task_status=='pending','taskInProgress':task.task_status=='inProgress','taskCompleted':task.task_status=='completed'}"
+            class="max-w-sm     rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out transform hover:scale-105 dark:bg-gray-800 dark:border-gray-700">
+
+            <div class="p-3 ">
+
+                <h5 class="mb-2 text-xl font-bold text-gray-900 dark:text-white">{{task.title}}</h5>
+                <p class="mb-4 text-sm text-gray-700 dark:text-gray-400">{{task.description}}</p>
+                <p class="mb-2 text-sm text-gray-700 dark:text-gray-400">Due Date: {{task.due_date |date}}</p>
+                <div class="relative">
+                    <label for="status"
+                        class="block text-sm font-medium text-gray-700 dark:text-gray-400">Status:</label>
+                    <select id="status"  name="status" #selectedStatus   (change)="taskStatusChanged(task._id,selectedStatus.value)"
+                        class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300">
+                        <option [value]="task.task_status" >{{task.task_status}}</option>
+                    
+                        <option  value="pending">Pending</option>
+                        <option value="inProgress">In Progress</option>
+                        <option value="completed">Completed</option>
+                  
+                    </select>
+                </div>
+            </div>
+            <div class="flex justify-center gap-3">
+                <div>
+                    <svg (click)="onEdit(task._id)" class="cursor-pointer" width="25px" height="25px"
+                        viewBox="-5.04 -5.04 34.08 34.08" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        stroke="#000000" stroke-width="0.144" transform="rotate(0)">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0">
+                            <path transform="translate(-5.04, -5.04), scale(1.065)"
+                                d="M16,28.516808819557937C17.948344537653107,28.811718318761123,20.03122339418041,28.91180169915745,21.821816160935114,28.08912582509239C23.618627165875832,27.263593023070392,24.70697629668328,25.472564000086322,25.95834393388391,23.941514284610932C27.221169512825373,22.396445764492746,28.53234097475389,20.88865864595676,29.233818424021674,19.020532696547086C29.98357029821275,17.023845656561846,30.350362475332044,14.893279276567501,30.15338109158347,12.769583125289136C29.94380893624161,10.51014331811071,29.555565865285644,8.089124268876311,28.06147790206413,6.381292342510692C26.573715467721815,4.680690874081266,24.064453632884288,4.461677792276808,22.028292767265604,3.482121083970714C19.992919679571276,2.502943360038344,18.256887872992056,0.48936855155192616,16.000000000000004,0.5787539524691443C13.736297948203473,0.6684092330341944,12.048988523564221,2.6453747062507182,10.197359246208325,3.9506923181289544C8.568961570711553,5.0986414194754275,7.067922968721573,6.333049781371358,5.735794769606777,7.814569470733817C4.346688181431913,9.359457389457937,2.371161751117891,10.7791585243178,2.1960274229911647,12.84933333863715C2.017358793727437,14.961285349228067,4.367245610648959,16.48112978465767,4.827587552043399,18.550030234441373C5.291292475606233,20.63404483024386,3.5609457444799153,23.189274661112027,4.871699593002422,24.874523438069794C6.176706548724081,26.552383379911912,8.94909404669372,25.785238889027976,10.969260573179215,26.446438060373406C12.714546986884681,27.017669152153786,14.184291768202621,28.241975700984632,16,28.516808819557937"
+                                fill="#7ed0ec" strokewidth="0"></path>
+                        </g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC"
+                            stroke-width="0.24000000000000005"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z"
+                                fill="#0F0F0F"></path>
+                        </g>
+                    </svg>
+                </div>
+                <div>
+
+                    <svg (click)="onDelete(task._id)" width="25px" height="25px" viewBox="-102.4 -102.4 1228.80 1228.80"
+                        class="icon cursor-pointer" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0">
+                            <path transform="translate(-102.4, -102.4), scale(38.4)"
+                                d="M16,27.403916642069817C19.23847872265997,27.436668062736754,22.75869567048838,30.812237185516594,25.361691439586764,28.885262842476976C27.971310277487024,26.953385501205513,26.026286954756014,22.6535074821542,26.70578494339777,19.478520391743626C27.281566690598844,16.788152436554192,29.293028971117042,14.506107029612627,29.025081915399426,11.7678943406397C28.71880555768109,8.637985684652843,27.86761948754534,4.983340159711149,25.1350382869735,3.4266984589977163C22.409081636952973,1.8738304985246466,19.13665709486665,4.4082019189114945,16,4.34802858862612C12.761441487999889,4.285900391281878,9.50986774369122,1.6346501083365228,6.606715384314624,3.071252881130629C3.6644706734905768,4.527200205478519,2.213922572440302,8.126860344104587,1.7861543061275018,11.381641574845542C1.3949938716136907,14.357883013786363,3.5816618746742463,16.880432353277065,4.412703094470615,19.7649409907051C5.286717996637707,22.79860944719821,4.1390608263930595,26.959616267641312,6.774878483393046,28.697290469607417C9.43235866877772,30.449245787197533,12.817153435736712,27.37172784119393,16,27.403916642069817"
+                                fill="#7ed0ec" strokewidth="0"></path>
+                        </g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path d="M724.3 198H296.1l54.1-146.6h320z" fill="#FAFCFB"></path>
+                            <path
+                                d="M724.3 216.5H296.1c-6.1 0-11.7-3-15.2-7.9-3.5-5-4.3-11.3-2.2-17L332.8 45c2.7-7.3 9.6-12.1 17.4-12.1h320c7.7 0 14.7 4.8 17.4 12.1l54.1 146.6c2.1 5.7 1.3 12-2.2 17-3.5 4.9-9.2 7.9-15.2 7.9z m-401.6-37h375.1L657.3 69.9H363.1l-40.4 109.6z"
+                                fill="#0F0F0F"></path>
+                            <path
+                                d="M664.3 981.6H339.7c-54.2 0-98.5-43.3-99.6-97.5L223.7 235h572.9l-32.8 651.4c-2.3 53.2-46.1 95.2-99.5 95.2z"
+                                fill="#9DC6AF"></path>
+                            <path
+                                d="M664.3 995H339.7c-29.7 0-57.8-11.4-79-32.2-21.2-20.8-33.3-48.6-34-78.3L210 221.6h600.7L777.2 887c-2.6 60.5-52.2 108-112.9 108zM237.4 248.3l16 635.5c0.5 22.7 9.7 44 25.9 59.8 16.2 15.9 37.7 24.6 60.4 24.6h324.6c46.3 0 84.2-36.2 86.2-82.5l32.1-637.4H237.4z"
+                                fill="#191919"></path>
+                            <path
+                                d="M827.1 239.5H193.3c-22.2 0-40.4-18.2-40.4-40.4v-2.2c0-22.2 18.2-40.4 40.4-40.4h633.8c22.2 0 40.4 18.2 40.4 40.4v2.2c0 22.2-18.2 40.4-40.4 40.4z"
+                                fill="#D39E33"></path>
+                            <path
+                                d="M826 252.9H194.4c-30.3 0-54.9-24.6-54.9-54.9 0-30.3 24.6-54.9 54.9-54.9H826c30.3 0 54.9 24.6 54.9 54.9s-24.7 54.9-54.9 54.9z m-631.6-83.1c-15.5 0-28.2 12.6-28.2 28.2s12.6 28.2 28.2 28.2H826c15.5 0 28.2-12.6 28.2-28.2 0-15.5-12.6-28.2-28.2-28.2H194.4z"
+                                fill="#111111"></path>
+                            <path d="M354.6 430.3v369.6" fill="#FAFCFB"></path>
+                            <path
+                                d="M354.6 813.3c-7.4 0-13.4-6-13.4-13.4V430.3c0-7.4 6-13.4 13.4-13.4s13.4 6 13.4 13.4v369.6c-0.1 7.4-6 13.4-13.4 13.4z"
+                                fill="#0F0F0F"></path>
+                            <path d="M458.3 430.3v369.6" fill="#FAFCFB"></path>
+                            <path
+                                d="M458.3 813.3c-7.4 0-13.4-6-13.4-13.4V430.3c0-7.4 6-13.4 13.4-13.4s13.4 6 13.4 13.4v369.6c0 7.4-6 13.4-13.4 13.4z"
+                                fill="#0F0F0F"></path>
+                            <path d="M562.1 430.3v369.6" fill="#FAFCFB"></path>
+                            <path
+                                d="M562.1 813.3c-7.4 0-13.4-6-13.4-13.4V430.3c0-7.4 6-13.4 13.4-13.4s13.4 6 13.4 13.4v369.6c-0.1 7.4-6.1 13.4-13.4 13.4z"
+                                fill="#0F0F0F"></path>
+                            <path d="M665.8 430.3v369.6" fill="#FAFCFB"></path>
+                            <path
+                                d="M665.8 813.3c-7.4 0-13.4-6-13.4-13.4V430.3c0-7.4 6-13.4 13.4-13.4s13.4 6 13.4 13.4v369.6c0 7.4-6 13.4-13.4 13.4z"
+                                fill="#0F0F0F"></path>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+
+    <div class="flex justify-center mt-4 md:ml-[78%] md:mt-10">
+        <nav class="relative z-0 inline-flex rounded-md shadow-sm  gap-8 -space-x-px" aria-label="Pagination">
+            <a href="#"
+                class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">Previous</a>
+
+
+            <a href="#"
+                class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">Next</a>
+        </nav>
+    </div>
+
+    <app-taskform [showModal]='showModal' [editModal]="editModal" [currrentTaskId]='currrentTaskId'
+        (closeModal)=' toggleModal()' (closeEditModal)='toggleEditModal()' [editRes]='editRes'></app-taskform>
+</div>

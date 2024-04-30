@@ -1,0 +1,23 @@
+input.ng-invalid.ng-touched {
+    border: red 2px solid;
+}
+
+input.ng-valid {
+    border: green 2px solid;
+}
+
+input:focus {
+    outline: none;
+}
+
+input:focus {
+    outline: none;
+    border-color: none;
+
+}
+
+input:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+
+}

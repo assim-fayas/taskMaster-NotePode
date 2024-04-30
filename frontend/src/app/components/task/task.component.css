@@ -1,0 +1,20 @@
+.active {
+    background-color: #e09f3e;
+
+    color: white;
+
+}
+
+.no-focus:focus {
+    outline: none;
+}
+
+.taskPending{
+background-color: #d4a373;
+}
+.taskInProgress{
+    background-color: #fdf0d5;
+}
+.taskCompleted{
+    background-color:#ccd5ae
+}

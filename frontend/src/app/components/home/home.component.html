@@ -1,0 +1,31 @@
+<app-navbar (userLoginned)="handleUserLogin($event)" (showModal)=" showModalView($event)"></app-navbar>
+
+<div class="bg-base min-h-screen flex flex-col md:flex-row justify-center items-center">
+
+    <div class="md:w-1/2 md:mr-6">
+        <div>
+            <p
+                class="text-gray-300 font-bold text-3xl md:text-6xl text-center md:ml-9 max-w-[700px] px-5 leading-[2.5rem] md:leading-[4rem]">
+                Your ultimate task management solution
+            </p>
+        </div>
+        <div class="flex justify-center md:ml-8 pt-7 md:pt-16 gap-10">
+            <button
+                class="bg-[#F9A727] hover:bg-yellow-400 py-3 px-6 rounded-full text-black font-bold hover:scale-110 hover:ease-in-out">Get
+                Started</button>
+            <button
+                class="bg-gray-300 hover:bg-gray-400 py-3 px-6 rounded-full text-black font-bold hover:scale-110 hover:ease-in-out">Learn
+                More <span class="">↗</span></button>
+        </div>
+
+    </div>
+
+    <div class="md:w-1/2">
+        <img src="../../assets/undraw_Working_re_ddwy-removebg-preview.png" alt="">
+    </div>
+    <ng-container *ngIf="showModal">
+        <app-login-signup-form (closeModal)="closeModal($event)"></app-login-signup-form>
+    </ng-container>
+
+
+</div>
