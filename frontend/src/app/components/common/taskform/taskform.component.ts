@@ -64,10 +64,7 @@ export class TaskformComponent implements OnInit,OnChanges {
     }
   }
 
-  // toggleEditModal() {
-  //  
 
-  // }
 
 
   onFormSubmitted() {
