@@ -21,7 +21,7 @@ user=new Subject<string>()
         return response
       }),
         catchError((error) => {
-          return throwError(() => error)
+          return throwError(() => error) 
 
         })
       )
